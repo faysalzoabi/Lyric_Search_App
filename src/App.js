@@ -1,28 +1,39 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+import NavBar from './components/Layout/NavBar'
+import Tracks from './components/tracks/Tracks'
+import Lyric from './components/tracks/Lyric'
+import { connect } from 'react-redux';
+import {Grid} from 'react-bootstrap';
+import { BrowserRouter, Route, Switch} from 'react-router-dom'
+import { fetchData } from './store/actions';
 import './App.css';
 
+
 class App extends Component {
+
+  componentDidMount(){
+        this.props.dispatch(fetchData())
+  }
+
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
+      <React.Fragment>
+        <NavBar/>
+            <div className="container">
+            <BrowserRouter>
+              <Switch>
+                <Grid>  
+                  <Route exact path = "/" component={Tracks}/>
+                  <Route exact path="/lyrics/track/:id" component={Lyric}/>
+                </Grid>
+              </Switch> 
+              </BrowserRouter>
+            </div>
+          
+      </React.Fragment>
+     
     );
   }
 }
 
-export default App;
+export default connect()(App);
